@@ -1,0 +1,30 @@
+
+# the nginx server instance
+server {
+    listen 0.0.0.0:80;
+    server_name ionic.jooxe.com;
+    access_log /usr/local/var/jooxe/apps/ionic/current/log/nginx.log;
+	
+    keepalive_timeout 300;
+
+    # client_max_body_size 10M;
+	
+    root /usr/local/var/jooxe/apps/ionic/current/public; # Set this to the public folder location of your application.
+	
+    try_files $uri $uri/ $uri.html;
+
+    # pass the request to the node.js server with the correct headers and much more can be added, 
+    # see nginx config options  http://nginx.org/en/docs/
+    location / {
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header Host $http_host;
+      proxy_set_header X-NginX-Proxy true;
+
+      proxy_pass http://127.0.0.1:3000/ionic/;
+      proxy_redirect off;
+	  proxy_read_timeout 300s;
+	  proxy_send_timeout 300s;
+    }
+ }
+ 
