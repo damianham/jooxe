@@ -1,0 +1,17 @@
+{{!< layout}}
+
+{{#contentFor 'content'}}
+<section ui-view>
+  
+  <h1>{{title}}</h1>
+  <h3>{{message}}</h3>
+<ul>
+    {{#each articles}}
+      <li>
+        <a href="/veggies/{{this.name}}">{{this.name}}</a>
+      </li>
+    {{/each}}
+</ul>
+</section>
+{{/contentFor}}
+
