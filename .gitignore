@@ -8,7 +8,7 @@ npm-debug.log*
 nbproject
 
 # local apps
-apps/*
+apps/**/
 
 # Runtime data
 pids
