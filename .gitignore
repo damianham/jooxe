@@ -3,6 +3,13 @@ logs
 *.log
 npm-debug.log*
 
+#IDE config
+.project
+nbproject
+
+# local apps
+apps/*
+
 # Runtime data
 pids
 *.pid
@@ -35,3 +42,4 @@ jspm_packages
 
 # Optional REPL history
 .node_repl_history
+/nbproject/private/
