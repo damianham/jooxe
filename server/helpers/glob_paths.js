@@ -23,8 +23,10 @@ var getGlobbedPaths = function (globPatterns, excludes) {
   } else if (_.isString(globPatterns)) {
     if (urlRegex.test(globPatterns)) {
       output.push(globPatterns);
-    } else {
-      var files = glob.sync(globPatterns);
+    } else { 
+      // ignore any files in public lib installed with bower
+      // ignore node modules in sub apps
+      var files = glob.sync(globPatterns,{ignore: ['apps/**/public/lib/**/*','apps/**/node_modules/**/*'  ]});
       if (excludes) {
         files = files.map(function (file) {
           if (_.isArray(excludes)) {
