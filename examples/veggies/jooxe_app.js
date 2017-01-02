@@ -31,7 +31,7 @@ module.exports.init = function(callback) {
   app.get('/', function (req, res) {
     res.render('index', {
       livereload: true,
-      title: 'Hey',
+      title: 'Veggies rock',
       message: 'Hello there!',
       description: 'this is the veggies website',
       cssFiles: ['css/styls.css', 'css/veggies.css'],
