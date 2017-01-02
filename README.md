@@ -62,6 +62,15 @@ Then start or reload nginx (as root if you want to access on port 80) and start 
 ```sh
 $ node server.js
 ```
+The nginx configuration files map a different domain name to each example app.  For example to test the hello app and the veggies app
+install the examples into the apps folder as above and setup the hostnames in /etc/hosts to point to the local host, e.g.
+
+```sh
+$ sudo echo "127.0.0.1  hello.example.com" >> /etc/hosts
+$ sudo echo "127.0.0.1  veggies.example.com" >> /etc/hosts
+```
+
+If you now open a browser web page at http://hello.example.com you will see he output from the hello app.
 
 #### Server side examples
  - hello - a simple app that displays Hello World

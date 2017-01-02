@@ -38,23 +38,6 @@
     </div>
   </noscript>
 
-  <!--Embedding The User Object-->
-  <script type="text/javascript">
-    var user = {{{ user }}};
-    var env = "{{ env }}";
-  </script>
-
-  <!--Load The Socket.io File-->
-  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-
-  <!--Application JavaScript Files-->
-    {{#each jsFiles}}<script type="text/javascript" src="/{{this}}"></script>{{/each}}
-  
-  <!--owasp config sync-->
-  <script type="text/javascript">
-    var sharedConfig = {{{ sharedConfig }}};
-    owaspPasswordStrengthTest.config(sharedConfig.owasp);
-  </script>
 
   {{#if livereload}}
   <!--Livereload script rendered -->
