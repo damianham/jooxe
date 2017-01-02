@@ -20,8 +20,9 @@ API backend.  I could of course deploy MEAN (or Rails) for the backend and the I
 However a strong desire for a bit of tinkering being the mother of invention here we are with a project to deploy web 
 apps in various formats - based on MEAN in many ways - but maybe a bit easier to understand.
 
-MEAN is great but there are a lot of files, in loads of folders with long filenames and deep paths.  Sometimes I just want to throw
-up a small site with a couple of pages and a bit of dynamic data or just an API backend etc.
+MEAN is great but there are a lot of files, in loads of folders with long filenames and deep paths and a lot of setup 
+in configuration files making it difficult to trace how things work.  Sometimes I just want to throw
+up a small site with a couple of pages and a bit of dynamic data or just an API backend etc. 
 
 So there you have it, le raison d'être.  I hope you find this project useful.  Please fork and contribute, especially example apps.
 

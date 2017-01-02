@@ -7,7 +7,7 @@
 var path = require('path'),
   mongoose = require('mongoose'),
   Article = mongoose.model('Article');
-  
+
 /**
  * Article middleware
  */

@@ -1,4 +1,4 @@
-/* 
+/*
  * An action that corresponds to the /users route
  */
 
@@ -35,19 +35,18 @@ module.exports.get = function (req, res, next, id) {
 };
 
 module.exports.post = function (req, res, next) {
-  
+
   var user = req.user;
 
-  User.insertOne( user).exec(function (err, user) {
+  User.insertOne(user).exec(function (err, user) {
     if (err) {
       return next(err);
     } else if (!user) {
-      return next(new Error('Failed to load User ' + id));
+      return next(new Error('Failed to add User '));
     }
 
     req.user = user;
     next();
   });
 };
-
 

@@ -2,7 +2,7 @@
 
 module.exports = {
   app: {
-    title:  'Secure domain'
+    title: 'Secure domain'
   },
   // DOMAIN config should be set to the fully qualified application accessible
   // URL. For example: https://www.myapp.com (including port if required).

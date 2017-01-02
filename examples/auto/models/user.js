@@ -11,8 +11,8 @@ const mongoose = require('mongoose'),
   generatePassword = require('generate-password'),
   owasp = require('owasp-password-strength-test');
 
-const config = require(path.join(process.cwd(),'server/config'));
-  
+const config = require(path.join(process.cwd(), 'server/config'));
+
 owasp.config(config.shared.owasp);
 
 

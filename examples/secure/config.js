@@ -1,5 +1,9 @@
 'use strict';
 
+var _ = require('lodash'),
+  fs = require('fs'),
+  path = require('path'),
+  chalk = require('chalk');           // https://github.com/chalk/chalk/
 
 /**
  * Validate Secure=true parameter can actually be turned on
@@ -56,7 +60,7 @@ module.exports.init = function() {
   var config = _.merge(defaultConfig, environmentConfig);
 
   // Extend the config object with the local-NODE_ENV.js custom/local environment. This will override any settings present in the local configuration.
-  config = _.merge(config, (fs.existsSync(path.join(__dirname, 'config/local-' + process.env.NODE_ENV + '.js')) && 
+  config = _.merge(config, (fs.existsSync(path.join(__dirname, 'config/local-' + process.env.NODE_ENV + '.js')) &&
     require(path.join(__dirname, 'config/local-' + process.env.NODE_ENV + '.js'))) || {});
 
   // Validate Secure SSL mode can be used
@@ -66,12 +70,10 @@ module.exports.init = function() {
   validateSessionSecret(config);
 
   // Expose configuration utilities
-  config.utils = { 
+  config.utils = {
     validateSessionSecret: validateSessionSecret
   };
 
   return config;
-}
-
-
+};
 

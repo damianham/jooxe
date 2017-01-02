@@ -1,16 +1,15 @@
-/* 
+/*
  * example app that uses helmet and lusca to make the site more secure
  */
 
 
-
-const config = require('./config'),
-  express = require("express"),   // https://github.com/expressjs/express
+const config = require('./config').init(),
+  express = require('express'),   // https://github.com/expressjs/express
   favicon = require('serve-favicon'), // https://github.com/expressjs/serve-favicon
   fs = require('fs'),
   path = require('path'),
-  session = require('express-session'), 
-  MongoStore = require('connect-mongo')(session), 
+  session = require('express-session'),
+  MongoStore = require('connect-mongo')(session),
   lusca = require('lusca'),       // https://github.com/krakenjs/lusca
   helmet = require('helmet'),     // https://github.com/helmetjs/helmet
   hbs = require('express-hbs');   //  https://github.com/barc/express-hbs
@@ -26,7 +25,7 @@ module.exports.initLocalVariables = function (app) {
   if (config.secure && config.secure.ssl === true) {
     app.locals.secure = config.secure.ssl;
   }
-  app.locals.keywords = config.app.keywords; 
+  app.locals.keywords = config.app.keywords;
   app.locals.livereload = config.livereload;
   app.locals.logo = config.logo;
   app.locals.favicon = config.favicon;
@@ -50,8 +49,8 @@ module.exports.initHelmetHeaders = function (app) {
     includeSubdomains: true,
     force: true
   }));
-  app.disable('x-powered-by'); 
-  
+  app.disable('x-powered-by');
+
 };
 
 
@@ -71,45 +70,45 @@ module.exports.initSession = function (app, db) {
     },
     name: config.sessionKey,
     store: new MongoStore({
-      url: 'mongodb://localhost/jooxe-sessions' ,
+      url: 'mongodb://localhost/jooxe-sessions',
       collection: config.sessionCollection
     })
   }));
 
-  
+
 };
 
 module.exports.init = function(callback) {
   const app = express();
-  
+
   // Initialize local variables
   this.initLocalVariables(app);
-  
+
   // Add Lusca CSRF Middleware
   app.use(lusca(config.csrf));
-  
+
   // Initialize Helmet security headers
   this.initHelmetHeaders(app);
 
   // Initialize Express session
-  this.initSession(app); 
-  
+  this.initSession(app);
+
   // Initialize favicon middleware
   if (fs.exists('public/img/brand/favicon.ico')) {
     app.use(favicon('public/img/brand/favicon.ico'));
-  }   
-  
+  }
+
   app.engine('html', hbs.express4({
     extname: '.html',
-    layoutsDir: path.join(__dirname,'views'),
-    defaultLayout: path.join(__dirname,'views','layout.html'),
-    partialsDir: path.join(__dirname,'views','partials')
+    layoutsDir: path.join(__dirname, 'views'),
+    defaultLayout: path.join(__dirname, 'views', 'layout.html'),
+    partialsDir: path.join(__dirname, 'views', 'partials')
   }));
   app.set('view engine', 'html');
-  app.set('views', path.join(__dirname,'views'));
-  
-  app.use('/', express.static(path.join(__dirname,'public'), { maxAge: 86400000 }));
-  
+  app.set('views', path.join(__dirname, 'views'));
 
-  callback(app, {mount_point: '/secure'});
+  app.use('/', express.static(path.join(__dirname, 'public'), { maxAge: 86400000 }));
+
+
+  callback(app, { mount_point: '/secure' });
 };
