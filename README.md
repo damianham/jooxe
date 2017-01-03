@@ -41,10 +41,11 @@ $ cd jooxe
 $ npm install
 ```
 
-There are a number of example apps included in the **examples** folder, some are server side rendered apps and others client side rendered SPAs.  
-Each example app has a corresponding Nginx configuration file in the **nginx** folder.  
+There are a number of example apps included in the **examples** folder, some are server side rendered apps and others 
+client side rendered SPAs.  Each example app has a corresponding Nginx configuration file in the **nginx** folder.  
 To run one or more of the example apps you need to copy the example app folder to the 
-apps folder and install the nginx configuration file and create the nginx static folder.  For example, assuming that the Nginx configuration folder is
+apps folder and install the nginx configuration file and create the nginx static folder.  
+For example, assuming that the Nginx configuration folder is
 /usr/local/etc/nginx and the default document root is /usr/local/var/www
 
 ```sh
@@ -70,16 +71,24 @@ $ sudo echo "127.0.0.1  hello.example.com" >> /etc/hosts
 $ sudo echo "127.0.0.1  veggies.example.com" >> /etc/hosts
 ```
 
-If you now open a browser web page at http://hello.example.com you will see he output from the hello app.
+If you now open a browser web page at http://hello.example.com you will see the output from the hello app.
+
+The example apps use various concepts and could be helpful to illustrate how MEAN apps work.  One important point to note is that
+Mongoose models must be unique across all apps.  So for example if you have an Article model in apps/angular and you want
+articles in another app then the model must be called something else, e.g. AutoArticle (for the auto app).
 
 #### Server side examples
  - hello - a simple app that displays Hello World
  - veggies - uses mustache style markup for dynamic web pages [express-hbs](https://github.com/barc/express-hbs) 
  - auto - a work in progress to discover views and controllers for dynamic routes
+ - secure - adds some security features to express
 
 ### Client side examples
  - angular - an AngularJS SPA with API backend
  - ionic - an Ionic application with API backend
+
+To get an Ionic app working create a new Ionic app and copy all of the contents to apps/ionic.  Once you have the domain name 
+and nginx routing setup as above then visit http://ionic.example.com to see the ionic app in your web browser.
 
 
 License
