@@ -17,6 +17,7 @@ module.exports.init = function(callback) {
     app.use(favicon('public/img/brand/favicon.ico'));
   }
 
+  // use the express-hbs handlebars templating engine to render views
   app.engine('html', hbs.express4({
     extname: '.html',
     layoutsDir: path.join(__dirname, 'views'),
@@ -26,8 +27,12 @@ module.exports.init = function(callback) {
   app.set('view engine', 'html');
   app.set('views', path.join(__dirname, 'views'));
 
+  // serve static files from the jooxe/apps/veggies/public folder
   app.use('/', express.static(path.join(__dirname, 'public'), { maxAge: 86400000 }));
 
+  // map the '/' route to display a list of veggies using jooxe/apps/veggies/views/index.html
+  // which is rendered inside the layout of jooxe/apps/veggies/views/layout.html
+  // this route maps to '/veggies/' or with a domainname http://veggies.example.com/
   app.get('/', function (req, res) {
     res.render('index', {
       livereload: true,
@@ -42,5 +47,6 @@ module.exports.init = function(callback) {
       ] });
   });
 
+  // mount this sub app on /veggies
   callback(app, { mount_point: '/veggies' });
 };

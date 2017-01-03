@@ -10,7 +10,7 @@ const express = require('express'),
   chats = require(path.join(__dirname,'/api/chats/chats.server.routes')),
   bootstrap = require('./bootstrap');
 
-  // create more api endpoints in a similar way to articles and add them below e.g.
+  // create more api endpoints in a similar way to articles e.g.
   // users = require(path.join(__dirname,'/api/users/users.server.routes'));
 
 module.exports.init = function(callback) {
@@ -21,6 +21,7 @@ module.exports.init = function(callback) {
     app.use(favicon('public/img/brand/favicon.ico'));
   }
 
+  // serve static files from the jooxe/apps/ionic/www folder
   app.use('/', express.static(path.join(__dirname, 'www'), { maxAge: 86400000 }));
 
   articles(app);
@@ -32,5 +33,6 @@ module.exports.init = function(callback) {
   // bootstrap the app - connect to the mongo database and add test data
   bootstrap(app);
   
+  // mount this sub app on /ionic
   callback(app, { mount_point: '/ionic' });
 };

@@ -9,7 +9,7 @@ const express = require('express'),
   path = require('path'),
   articles = require(path.join(__dirname,'/api/articles/articles.server.routes'));
 
-  // create more api endpoints in a similar way to articles and add them below e.g.
+  // create more api endpoints in a similar way to articles  e.g.
   // users = require(path.join(__dirname,'/api/users/users.server.routes'));
 
 module.exports.init = function(callback) {
@@ -20,6 +20,7 @@ module.exports.init = function(callback) {
     app.use(favicon('public/img/brand/favicon.ico'));
   }
 
+  // serve static files from the jooxe/apps/angular/public folder
   app.use('/', express.static(path.join(__dirname, 'public'), { maxAge: 86400000 }));
 
   articles(app);
@@ -27,5 +28,6 @@ module.exports.init = function(callback) {
   // add more api endpoints here, e.g.
   // users(app)
   
+  // mount this sub app on /angular
   callback(app, { mount_point: '/angular' });
 };

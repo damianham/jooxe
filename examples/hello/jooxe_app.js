@@ -16,11 +16,14 @@ module.exports.init = function(callback) {
     app.use(favicon('public/img/brand/favicon.ico'));
   }
 
+  // serve static files from the jooxe/apps/hello/public folder
   app.use('/', express.static(path.join(__dirname, 'public'), { maxAge: 86400000 }));
 
+  // a route in this subapp that maps to '/hello/world' or with a domainname http://hello.example.com/world
   app.use('/world', function(req, res) {
     res.json({ text: 'Hello world' });
   });
 
+  // mount this sub app on /hello
   callback(app, { mount_point: '/hello' });
 };
