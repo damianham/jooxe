@@ -90,7 +90,7 @@ $ sudo echo "127.0.0.1  veggies.example.com" >> /etc/hosts
 
 If you now open a browser web page at http://hello.example.com you will see the output from the hello app.
 
-The example apps use various concepts and could be helpful to illustrate how MEAN apps work.  One important point to note is that
+The example apps use various concepts and could be helpful to illustrate how MEAN and express apps work.  One important point to note is that
 Mongoose models must be unique across all apps.  So for example if you have an Article model in apps/angular and you want
 articles in another app then the model must be called something else, e.g. AutoArticle (for the auto app).
 
@@ -115,7 +115,7 @@ $ mkdir -p jooxe/apps
 $ mv chats jooxe/apps/ionic
 $ cp -r jooxe/examples/ionic/* jooxe/apps/ionic
 ```
-The ionic starter app has static Chats data in a Chat service.  The ionic example app in jooxe/examples/ionic overwrite some elements of the
+The ionic starter app has static Chats data in a Chat service.  The ionic example app in jooxe/examples/ionic overwrites some elements of the
 ionic starter app and provide a backend api service to load chats data from a mongoDB database.
 
 Once you have the domain name and nginx routing setup as above then visit http://ionic.example.com to see the ionic app in your web browser.
