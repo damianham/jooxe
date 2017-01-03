@@ -6,7 +6,7 @@
 var path = require('path'),
   mongoose = require('mongoose'),
   Article = mongoose.model('Article'),
-  errorHandler = require(path.join(__dirname, '../../errors.server.controller')),
+  errorHandler = require(path.join(__dirname, '../errors.server.controller')),
   _ = require('lodash');
 
 /**
