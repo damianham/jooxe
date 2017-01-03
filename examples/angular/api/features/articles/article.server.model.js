@@ -32,4 +32,4 @@ var ArticleSchema = new Schema({
   }
 });
 
-mongoose.model('AutoArticle', ArticleSchema);
+mongoose.model('Article', ArticleSchema);
