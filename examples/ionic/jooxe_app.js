@@ -1,6 +1,6 @@
 /*
- * example app to render a page with a list of veggies using the express-hbs template engine
- * and mounted on /veggies
+ * example app to render an ionic base app
+ * and mounted on /ionic
  */
 
 const express = require('express'),
