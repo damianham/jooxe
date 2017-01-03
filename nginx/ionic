@@ -2,7 +2,7 @@
 # the nginx server instance
 server {
     listen 0.0.0.0:80;
-    server_name ionic.jooxe.com;
+    server_name ionic.example.com;
     access_log /usr/local/var/jooxe/apps/ionic/current/log/nginx.log;
 	
     keepalive_timeout 300;

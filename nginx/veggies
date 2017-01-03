@@ -2,7 +2,7 @@
 # the nginx server instance
 server {
     listen 0.0.0.0:80;
-    server_name veggies.jooxe.com;
+    server_name veggies.example.com;
     access_log /usr/local/var/jooxe/apps/veggies/current/log/nginx.log;
 	
     keepalive_timeout 300;

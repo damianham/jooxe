@@ -2,7 +2,7 @@
 # the nginx server instance
 server {
     listen 0.0.0.0:80;
-    server_name secure.jooxe.com;
+    server_name secure.example.com;
     access_log /usr/local/var/jooxe/apps/secure/current/log/nginx.log;
 	
     keepalive_timeout 300;
