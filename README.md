@@ -17,7 +17,7 @@ You can of course use Rails for an api backend but I found the
 More recently my projects tend to be based on [Ionic](http://ionicframework.com/) which is essentially a mobile 
 framework (based on Apache Cordova).  Ideally I want to deploy an Ionic application to mobile and web with a Node.JS 
 API backend.  I could of course deploy MEAN (or Rails) for the backend and the Ionic artifacts served from a static web server.  
-However a strong desire for a bit of tinkering being the mother of invention here we are with a project to deploy web 
+However, a strong desire for a bit of tinkering being the mother of invention, here we are with a project to deploy web 
 apps in various formats - based on MEAN in many ways - but maybe a bit easier to understand.
 
 MEAN is great but there are a lot of files, in loads of folders with long filenames and deep paths and a lot of setup 
@@ -28,8 +28,8 @@ So there you have it, le raison d'être.  I hope you find this project useful.  
 
 ### Requirements
  - [Node.js](https://nodejs.org/)
- - [Nginx](https://nginx.org/)
- - [MongoDB](https://docs.mongodb.com/)
+ - [Nginx](https://nginx.org/)  (to map domain names to sub applications)
+ - [MongoDB](https://docs.mongodb.com/)  (for the Ionic example application)
 
 ### Installation
 
@@ -55,7 +55,9 @@ client side rendered SPAs.  To see how the subapps are setup look at jooxe/examp
 illustration of the concept.  Veggies is your next step to jooxe goodness - another super simple app that uses 
 the express-hbs plugin to render dynamic content.  
 
-Each example app has a corresponding Nginx configuration file in the **nginx** folder.  
+Each example app has a corresponding Nginx configuration file in the **nginx** folder.  Nginx is a great web server that can be setup
+as a reverse proxy and we use that to map domain names to a specific URI path, e.g. hello.example.com is mapped to jooxe/apps/hello etc.
+
 To run one or more of the example apps you need to copy the example app folder to the 
 apps folder and install the nginx configuration file and create the nginx static folder.  
 For example, assuming that the Nginx configuration folder is
@@ -102,17 +104,19 @@ articles in another app then the model must be called something else, e.g. AutoA
  - angular - an AngularJS SPA with API backend
  - ionic - an Ionic application with API backend
 
-To get an Ionic app working create a new Ionic app and copy all of the contents to apps/ionic. Then copy the contents of the ionic example
+To get an Ionic app working create a new Ionic app with the ionic-cli and copy all of the contents to jooxe/apps/ionic. 
+Then copy the contents of the ionic example
 on top to overwrite some of the ionic starter artifacts. E.g.
 
 ```sh
-$ cd jooxe/..
+$ cd (path to jooxe parent folder)
 $ ionic new chats
+$ mkdir -p jooxe/apps
 $ mv chats jooxe/apps/ionic
 $ cp -r jooxe/examples/ionic/* jooxe/apps/ionic
 ```
 The ionic starter app has static Chats data in a Chat service.  The ionic example app in jooxe/examples/ionic overwrite some elements of the
-ionic starter app and provide a backend api service to load chats data from a mongodb database.
+ionic starter app and provide a backend api service to load chats data from a mongoDB database.
 
 Once you have the domain name and nginx routing setup as above then visit http://ionic.example.com to see the ionic app in your web browser.
 
