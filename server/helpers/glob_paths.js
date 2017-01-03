@@ -26,7 +26,15 @@ var getGlobbedPaths = function (globPatterns, excludes) {
     } else { 
       // ignore any files in public lib installed with bower
       // ignore node modules in sub apps
-      var files = glob.sync(globPatterns,{ignore: ['apps/**/public/lib/**/*','apps/**/node_modules/**/*'  ]});
+      var files = glob.sync(globPatterns,{
+        ignore: [
+          'apps/**/public/lib/**/*',
+          'apps/**/www/lib/**/*',
+          'apps/**/hooks/**/*',
+          'apps/**/platforms/**/*',
+          'apps/**/plugins/**/*',
+          'apps/**/node_modules/**/*'
+        ]});
       if (excludes) {
         files = files.map(function (file) {
           if (_.isArray(excludes)) {
