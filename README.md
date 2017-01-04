@@ -120,8 +120,10 @@ ionic starter app and provide a backend api service to load chats data from a mo
 
 Once you have the domain name and nginx routing setup as above then visit http://ionic.example.com to see the ionic app in your web browser.
 
+## Credits
+Hats off to the [MEAN team](http://meanjs.org) for their great work.
 
-License
+##License
 
 The MIT License (MIT)
 
