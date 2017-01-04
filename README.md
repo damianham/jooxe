@@ -101,7 +101,7 @@ articles in another app then the model must be called something else, e.g. AutoA
  - secure - adds some security features to express
 
 ### Client side examples
- - angular - an AngularJS SPA with API backend
+ - angular - an AngularJS SPA with API backend (run bower install to install dependencies)
  - ionic - an Ionic application with API backend
 
 To get an Ionic app working create a new Ionic app with the ionic-cli and copy all of the contents to jooxe/apps/ionic. 
