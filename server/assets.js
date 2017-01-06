@@ -5,7 +5,7 @@
 const globber = require('./helpers/glob_paths');
 
 var assets = {
-  views: globber('apps/**/views/**/*.html'),
+  views: globber(['apps/**/views/**/*.html','apps/**/www/templates/**/*.html']),
   jsFiles: globber('apps/**/*.js'),
   cssFiles: globber('apps/**/{css,less,scss}/*.css'),
   sassFiles: globber('apps/**/scss/*.scss'),
