@@ -31,15 +31,58 @@ So there you have it, le raison d'être.  I hope you find this project useful.  
  - [Nginx](https://nginx.org/)  (to map domain names to sub applications)
  - [MongoDB](https://docs.mongodb.com/)  (for the Ionic example application)
 
-### Installation
+### Installation option 1
+
+Use git clone
 
 ```sh
 $ git clone https://github.com/damianham/jooxe.git
 $ cd jooxe
 $ npm install
-$ mkdir apps
 ```
 
+This will create a clone of the repository on github.
+
+### Installation option 2
+
+Use the github repository as an upstream repo and create a private repository for your web applications.
+
+First create a private repository somewhere e.g. on your own VPS my_vps_server.com in the folder $HOME/repositories/my_jooxe_apps.git
+```sh
+~$ ssh mylogin@my_vps_server.com
+mylogin@my_vps_server:~$ mkdir -p repositories/my_jooxe_apps.git
+mylogin@my_vps_server:~$ cd !$    # ( that is a short cut that expands to the last argument of the previous command)
+mylogin@my_vps_server:~/repositories/my_jooxe_apps.git$ git init --bare
+mylogin@my_vps_server:~/repositories/my_jooxe_apps.git$ ^d    # ( control d to quit the ssh login to the VPS )
+```
+
+Now the remote repository is created we can clone it locally and add an upstream remote to the github jooxe repo
+```sh
+~$ git clone mylogin@myvps_server.com:repositories/my_jooxe_apps.git
+~$ cd my_jooxe_apps
+~/my_jooxe_apps$ git remote add upstream https://github.com/damianham/jooxe.git
+~/my_jooxe_apps$ git fetch upstream
+~/my_jooxe_apps$ git merge upstream/master
+~/my_jooxe_apps$ git branch --unset-upstream
+```
+
+You now have a local git repository that uses your own private remote repo for your web applications in the apps folder.  The final thing to
+do is to remove apps from .gitignore so you can save your changes to your private repo.  Edit .gitignore and change the lines 
+
+```
+# local apps
+apps/**/
+```
+
+to 
+```
+# local apps
+#apps/**/
+```
+
+or remove these lines altogether.
+
+### How it works
 The technique used here is to mount sub applications into the main application and use a reverse proxy to access the sub app via a 
 specific hostname.  If you trace through the jooxe boot process you will see it is quite simple.  
 
@@ -92,7 +135,8 @@ If you now open a browser web page at http://hello.example.com you will see the 
 
 The example apps use various concepts and could be helpful to illustrate how MEAN and express apps work.  One important point to note is that
 Mongoose models must be unique across all apps.  So for example if you have an Article model in apps/angular and you want
-articles in another app then the model must be called something else, e.g. AutoArticle (for the auto app).
+articles in another app then the model must be called something else, e.g. AutoArticle (for the auto app).  Another point to note is that if your web apps
+use any node modules then you need to add them to the main node_modules folder at the root and not in your web application.
 
 #### Server side examples
  - hello - a simple app that displays Hello World
