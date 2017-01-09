@@ -10,6 +10,15 @@ nbproject
 # local apps
 apps/**/
 
+#ionic artifacts for mobile build
+apps/**/www/lib
+apps/**/hooks
+apps/**/node_modules
+apps/**/platforms
+apps/**/plugins
+apps/**/resources
+apps/**/scss
+
 # Runtime data
 pids
 *.pid
