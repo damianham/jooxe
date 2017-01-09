@@ -7,9 +7,6 @@ npm-debug.log*
 .project
 nbproject
 
-# local apps
-apps/**/
-
 #ionic artifacts for mobile build
 apps/**/www/lib
 apps/**/hooks
