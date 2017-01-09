@@ -7,6 +7,10 @@ npm-debug.log*
 .project
 nbproject
 
+# apps build folders
+apps/**/build/
+apps/**/dist/
+
 #ionic artifacts for mobile build
 apps/**/www/lib
 apps/**/hooks
