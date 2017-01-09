@@ -73,7 +73,7 @@ gulp.task('buildapps', function() {
 
   files.map(function(filename) {
     var folder = path.dirname(filename)
-    spawn('gulp', ['build'], { cwd: folder, stdio: 'inherit' })
+    spawn('gulp', ['--gulpfile','localgulp.js','build'], { cwd: folder, stdio: 'inherit' })
     .on('close', (code) => {
       console.log('finished build in ', folder, 'with code',code);
     }); 
