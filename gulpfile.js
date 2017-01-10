@@ -15,7 +15,7 @@ var _ = require('lodash'),
   assets = assetFiles.assets,
   testAssets = assetFiles.testAssets;
 
-var spawn = require('child_process').spawn;
+var spawnSync = require('child_process').spawnSync;
 const globber = require('./server/helpers/glob_paths')
 
 function getFolders(dir) {
@@ -46,11 +46,10 @@ gulp.task('npmapps', function() {
 
     files.map(function(filename) {
       var folder = path.dirname(filename)
-      spawn('npm', ['install'], { cwd: folder, stdio: 'inherit' })
-      .on('close', (code) => {
-        console.log('finished npm install in ', folder, 'with code',code);
-      }); 
+      var res = spawnSync('npm', ['install'], { cwd: folder, stdio: 'inherit' }) ;
+      console.log('finished npm install in ', folder, 'with code',res.code);
     });
+    return true;
 });
 
 // run bower install in each subapp
@@ -59,11 +58,10 @@ gulp.task('bowerapps', function() {
 
   files.map(function(filename) {
     var folder = path.dirname(filename)
-    spawn('npm', ['install'], { cwd: folder, stdio: 'inherit' })
-    .on('close', (code) => {
-      console.log('finished bower install in ', folder, 'with code',code);
-    }); 
+    var res = spawnSync('npm', ['install'], { cwd: folder, stdio: 'inherit' });
+    console.log('finished bower install in ', folder, 'with code',res.code);
   });
+  return true;
 });
 
 // build the web distribution in each subapp
@@ -73,11 +71,10 @@ gulp.task('buildapps', function() {
 
   files.map(function(filename) {
     var folder = path.dirname(filename)
-    spawn('gulp', ['--gulpfile','localgulp.js','build'], { cwd: folder, stdio: 'inherit' })
-    .on('close', (code) => {
-      console.log('finished build in ', folder, 'with code',code);
-    }); 
+    var res = spawnSync('gulp', ['--gulpfile','localgulp.js','build'], { cwd: folder, stdio: 'inherit' }) ;
+    console.log('finished build in ', folder, 'with code',res.code);
   });
+  return true;
 });
 
 gulp.task('build', function (done) {
