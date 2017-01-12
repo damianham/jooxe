@@ -67,7 +67,7 @@ gulp.task('bowerapps', function() {
 // build the web distribution in each subapp
 // i.e. minify/uglify and package into single js/css files
 gulp.task('buildapps', function() {
-  var files = globber('apps/*/gulpfile.js'); 
+  var files = globber('apps/*/localgulp.js'); 
 
   files.map(function(filename) {
     var folder = path.dirname(filename)
