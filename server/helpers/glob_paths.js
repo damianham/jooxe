@@ -8,7 +8,7 @@ const _ = require('lodash'),
 /**
  * Get files by glob patterns
  */
-var getGlobbedPaths = function (globPatterns, excludes) {
+var getGlobbedPaths = function (globPatterns, excludes,ignore_paths=[]) {
   // URL paths regex
   var urlRegex = new RegExp('^(?:[a-z]+:)?\/\/', 'i');
 
@@ -26,15 +26,16 @@ var getGlobbedPaths = function (globPatterns, excludes) {
     } else { 
       // ignore any files in public lib installed with bower
       // ignore node modules in sub apps
+      // ignore passed in paths
       var files = glob.sync(globPatterns,{
-        ignore: [
+        ignore: ignore_paths.concat([
           'apps/**/public/lib/**/*',
           'apps/**/www/lib/**/*',
           'apps/**/hooks/**/*',
           'apps/**/platforms/**/*',
           'apps/**/plugins/**/*',
           'apps/**/node_modules/**/*'
-        ]});
+        ])});
       if (excludes) {
         files = files.map(function (file) {
           if (_.isArray(excludes)) {

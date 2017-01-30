@@ -4,8 +4,7 @@
  * Module dependencies.
  */
 var path = require('path'),
-  mongoose = require('mongoose'),
-  Chat = mongoose.model('IonicChat'),
+  mongoose = require('mongoose'), 
   errorHandler = require(path.join(__dirname, '../errors.server.controller')),
   _ = require('lodash');
 
@@ -13,7 +12,7 @@ var path = require('path'),
  * Create a Chat
  */
 exports.create = function(req, res) {
-  var chat = new Chat(req.body);
+  var chat = new req.app.locals.Chat(req.body);
   chat.user = req.user;
 
   chat.save(function(err) {
@@ -81,7 +80,7 @@ exports.delete = function(req, res) {
  * List of Chats
  */
 exports.list = function(req, res) { 
-  Chat.find().sort('-created').populate('user').exec(function(err, chats) {
+  req.app.locals.Chat.find().sort('-created').populate('user').exec(function(err, chats) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -103,7 +102,7 @@ exports.chatByID = function(req, res, next, id) {
     });
   }
 
-  Chat.findById(id).populate('user').exec(function (err, chat) {
+  req.app.locals.Chat.findById(id).populate('user').exec(function (err, chat) {
     if (err) {
       return next(err);
     } else if (!chat) {

@@ -10,6 +10,29 @@ module.exports = {
     certificate: './config/sslcerts/cert.pem',
     caBundle: './config/sslcerts/cabundle.crt'
   },
+  db: {
+    uri: process.env.MONGOHQ_URL || process.env.MONGODB_URI || 'mongodb://' + (process.env.DB_1_PORT_27017_TCP_ADDR || 'localhost') ,
+    options: {
+      user: '',
+      pass: ''
+      /**
+        * Uncomment to enable ssl certificate based authentication to mongodb
+        * servers. Adjust the settings below for your specific certificate
+        * setup.
+      server: {
+        ssl: true,
+        sslValidate: false,
+        checkServerIdentity: false,
+        sslCA: fs.readFileSync('./config/sslcerts/ssl-ca.pem'),
+        sslCert: fs.readFileSync('./config/sslcerts/ssl-cert.pem'),
+        sslKey: fs.readFileSync('./config/sslcerts/ssl-key.pem'),
+        sslPass: '1234'
+      }
+      */
+    },
+    // Enable mongoose debug mode
+    debug: process.env.MONGODB_DEBUG || false
+  },
   port: process.env.PORT || 8443,
   // Binding to 127.0.0.1 is safer in production.
   host: process.env.HOST || '0.0.0.0',

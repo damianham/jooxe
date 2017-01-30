@@ -4,8 +4,7 @@
  * Module dependencies
  */
 var _ = require('lodash'),
-  mongoose = require('mongoose'),
-  User = mongoose.model('User');
+  mongoose = require('mongoose');
 
 /**
  * User middleware to load the user identified by the userId
@@ -17,7 +16,7 @@ var userByID = function (req, res, next, id) {
     });
   }
 
-  User.findOne({
+  req.app.locals.User.findOne({
     _id: id
   }).exec(function (err, user) {
     if (err) {

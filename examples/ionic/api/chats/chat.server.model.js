@@ -9,7 +9,7 @@ var mongoose = require('mongoose'),
 /**
  * Chat Schema
  */
-var ChatSchema = new Schema({
+module.exports = new Schema({
   name: {
     type: String,
     default: '',
@@ -37,5 +37,4 @@ var ChatSchema = new Schema({
     ref: 'User'
   }
 });
-
-mongoose.model('IonicChat', ChatSchema);
+ 

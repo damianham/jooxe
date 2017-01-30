@@ -7,18 +7,36 @@ const config = require('./config'),
   express = require("./express"),     // https://github.com/expressjs/express
   chalk = require('chalk'),           // https://github.com/chalk/chalk/
   path = require('path'),
+  mongoose = require('mongoose'),
   globber = require('./helpers/glob_paths');
 
 module.exports.init = function init(callback) {
   const mainapp = express.init();
   
   const apps = globber('apps/**/jooxe_app.js');
-  
+   
   console.log('apps == ', apps);
+  
+  //setup the mongoose promise
+  mongoose.Promise = global.Promise;
+  
+  //Enabling mongoose debug mode if required
+  mongoose.set('debug', config.db.debug);
+  
+  // https://github.com/Automattic/mongoose/wiki/3.8-Release-Notes#connection-pool-sharing
+  
+  var db_pool = mongoose.createConnection(config.db.uri, config.db.options, function (err) {
+    // Log Error
+    if (err) {
+      console.error(chalk.red('Could not connect to MongoDB!'));
+      console.log(err);
+ 
+    } 
+  }); 
  
   apps.forEach(function(filepath){
     var subapp = require(path.join(process.cwd(), filepath));
-    subapp.init(function(app,config){
+    subapp.init(db_pool, function(app,config){
       mainapp.use(config.mount_point,app);
     });
   

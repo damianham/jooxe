@@ -2,7 +2,8 @@
  * example app to render a page based on views and actions
  */
 
-const _ = require('lodash'),
+const config = require('./config'),
+  _ = require('lodash'),
   express = require('express'),
   favicon = require('serve-favicon'),
   fs = require('fs'),
@@ -11,13 +12,17 @@ const _ = require('lodash'),
 
 const globber = require(path.join(process.cwd(), 'server/helpers/glob_paths'));
 
-module.exports.init = function(callback) {
+module.exports.init = function(db_pool, callback) {
   const app = express();
 
   // Initialize favicon middleware
   if (fs.exists('public/img/brand/favicon.ico')) {
     app.use(favicon('public/img/brand/favicon.ico'));
   }
+  
+  // use the db from the shared connection pool for the sub app
+  // so the models are distinct to each database
+  app.db = db_pool.useDb(config.db.name);
 
   app.engine('html', hbs.express4({
     extname: '.html',
@@ -30,10 +35,10 @@ module.exports.init = function(callback) {
 
   app.use('/', express.static(path.join(__dirname, 'public'), { maxAge: 86400000 }));
 
-  // create the mongoose schemas
+  // create the mongoose models on the db
   const models = globber(path.join(__dirname, 'models/**/*.js'));
   models.forEach(function(filepath) {
-    require(filepath);
+    require(filepath)(app);
   });
 
   // install the middleware

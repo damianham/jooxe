@@ -11,9 +11,7 @@ var _ = require('lodash'),
   gulp = require('gulp'),
   plugins = require('gulp-load-plugins')(),
   runSequence = require('run-sequence'),
-  assetFiles = require('./server/assets'),
-  assets = assetFiles.assets,
-  testAssets = assetFiles.testAssets;
+  assets = require('./server/assets');
 
 var spawnSync = require('child_process').spawnSync;
 const globber = require('./server/helpers/glob_paths')
@@ -58,7 +56,7 @@ gulp.task('bowerapps', function() {
 
   files.map(function(filename) {
     var folder = path.dirname(filename)
-    var res = spawnSync('npm', ['install'], { cwd: folder, stdio: 'inherit' });
+    var res = spawnSync('bower', ['install'], { cwd: folder, stdio: 'inherit' });
     console.log('finished bower install in ', folder, 'with code',res.code);
   });
   return true;
@@ -78,7 +76,7 @@ gulp.task('buildapps', function() {
 });
 
 gulp.task('build', function (done) {
-  runSequence('npmapps',  'bowerapps', 'buildapps', done);
+  runSequence( 'bowerapps', 'buildapps', done);
 });
 
 
@@ -89,7 +87,7 @@ gulp.task('nodemon', function () {
     nodeArgs: ['--debug'],
     ext: 'js,html',
     verbose: true,
-    watch: _.union(assets.views, assets.jsFiles)
+    watch: _.union(assets.server.views, assets.server.jsFiles,assets.server.cssFiles,assets.server.sassFiles,assets.server.lessFiles)
   });
 });
 
@@ -98,7 +96,7 @@ gulp.task('nodemon-nodebug', function () {
   return plugins.nodemon({
     script: 'server.js',
     ext: 'js,html',
-    watch: _.union(assets.views, assets.jsFiles)
+    watch: _.union(assets.server.views, assets.server.jsFiles,assets.server.cssFiles,assets.server.sassFiles,assets.server.lessFiles)
   });
 });
 
@@ -107,42 +105,87 @@ gulp.task('watch', function () {
   // Start livereload
   plugins.refresh.listen();
 
-  // Add watch rules
-  gulp.watch(assets.views).on('change', plugins.refresh.changed);
-  gulp.watch(assets.jsFiles, ['eslint']).on('change', plugins.refresh.changed); 
-  gulp.watch(assets.cssFiles, ['csslint']).on('change', plugins.refresh.changed); 
-
+  // Add watch rules to reload the browser when client files change
+  gulp.watch(assets.client.views).on('change', plugins.refresh.changed);  
+  gulp.watch(assets.client.jsFiles).on('change', plugins.refresh.changed); 
+  gulp.watch(assets.client.cssFiles).on('change', plugins.refresh.changed); 
+  
+  // only process the modified files
+  gulp
+  .watch(assets.client.jsFiles)
+  .on("change", function(event) {
+      gulp
+        .src(event.path)
+        .pipe(plugins.eslint())
+        .pipe(plugins.eslint.format());
+  });
+  
+//only process the modified files
+  gulp
+  .watch(assets.client.cssFiles)
+  .on("change", function(file) {
+      gulp
+        .src(file.path)
+        .pipe(plugins.csslint('.csslintrc'))
+        .pipe(plugins.csslint.formatter());
+  });
 });
 
 // CSS linting task
 gulp.task('csslint', function () {
-  return gulp.src(assets.cssFiles)
+  return gulp.src(assets.client.cssFiles)
     .pipe(plugins.csslint('.csslintrc'))
     .pipe(plugins.csslint.formatter());
     // Don't fail CSS issues yet
     // .pipe(plugins.csslint.failFormatter());
 });
 
-// ESLint JS linting task
-gulp.task('eslint', function () {
-  var srcs = _.union(
-    assets.jsFiles, 
-    testAssets.server,
-    testAssets.client,
-    testAssets.e2e
-  );
+//ESLint JS linting task
+gulp.task('serverlint', function () {
 
-  return gulp.src(srcs)
+  return gulp.src(assets.server.jsFiles)
     .pipe(plugins.eslint())
     .pipe(plugins.eslint.format());
 });
 
+//ESLint JS linting task
+gulp.task('testlint', function () {
 
-// Lint CSS and JavaScript files.
-gulp.task('lint', function (done) {
-  runSequence(['csslint', 'eslint'], done);
+  return gulp.src(assets.test.jsFiles)
+    .pipe(plugins.eslint())
+    .pipe(plugins.eslint.format());
 });
 
+// ESLint JS linting task
+gulp.task('eslint', function () {
+
+  return gulp.src(assets.client.jsFiles)
+    .pipe(plugins.eslint())
+    .pipe(plugins.eslint.format());
+});
+
+gulp.task('files',function(done){
+  console.log('========server========');
+  console.log('views',assets.server.views);
+  console.log('javascript',assets.server.jsFiles);
+  console.log('css',assets.server.cssFiles);
+  console.log('sass',assets.server.sassFiles);
+  console.log('less',assets.server.lessFiles);
+  
+  console.log('========client========')
+  console.log('views',assets.client.views);
+  console.log('javascripts',assets.client.jsFiles);
+  console.log('css',assets.client.cssFiles);
+  console.log('sass',assets.client.sassFiles);
+  console.log('less',assets.client.lessFiles);
+})
+
+
+
+// Lint CSS and JavaScript files.
+gulp.task('lint', ['serverlint','testlint'],function (done) {
+  runSequence(['csslint', 'eslint'], done);
+});
 
 // Run the project in development mode
 gulp.task('default', function (done) {
@@ -152,6 +195,11 @@ gulp.task('default', function (done) {
 // Run the project in debug mode
 gulp.task('debug', function (done) {
   runSequence('env:dev',   'lint', ['nodemon-nodebug', 'watch'], done);
+});
+
+//Run the project in debug mode
+gulp.task('test', function (done) {
+  runSequence('env:test',   'testlint', ['nodemon-nodebug', 'watch'], done);
 });
 
 // Run the project in production mode

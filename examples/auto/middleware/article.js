@@ -5,8 +5,7 @@
  */
 
 var path = require('path'),
-  mongoose = require('mongoose'),
-  Article = mongoose.model('AutoArticle');
+  mongoose = require('mongoose');
 
 /**
  * Article middleware
@@ -19,7 +18,7 @@ var articleByID = function(req, res, next, id) {
     });
   }
 
-  Article.findById(id).populate('user', 'displayName').exec(function (err, article) {
+  req.app.locals.Article.findById(id).populate('user', 'displayName').exec(function (err, article) {
     if (err) {
       return next(err);
     } else if (!article) {

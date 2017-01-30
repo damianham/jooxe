@@ -4,8 +4,7 @@
  * Module dependencies.
  */
 var path = require('path'),
-  mongoose = require('mongoose'),
-  Article = mongoose.model('Article'),
+  mongoose = require('mongoose'), 
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash');
 
@@ -13,7 +12,7 @@ var path = require('path'),
  * Create a Article
  */
 exports.create = function(req, res) {
-  var article = new Article(req.body);
+  var article = new req.app.locals.Article(req.body);
   article.user = req.user;
 
   article.save(function(err) {
@@ -81,7 +80,7 @@ exports.delete = function(req, res) {
  * List of Articles
  */
 exports.list = function(req, res) {
-  Article.find().sort('-created').populate('user', 'displayName').exec(function(err, articles) {
+  req.app.locals.Article.find().sort('-created').populate('user', 'displayName').exec(function(err, articles) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)

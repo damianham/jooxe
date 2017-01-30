@@ -9,7 +9,7 @@ var mongoose = require('mongoose'),
 /**
  * Article Schema
  */
-var ArticleSchema = new Schema({
+module.exports = new Schema({
   name: {
     type: String,
     default: '',
@@ -31,5 +31,4 @@ var ArticleSchema = new Schema({
     ref: 'User'
   }
 });
-
-mongoose.model('IonicArticle', ArticleSchema);
+ 

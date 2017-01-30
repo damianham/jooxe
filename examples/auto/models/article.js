@@ -32,4 +32,7 @@ var ArticleSchema = new Schema({
   }
 });
 
-mongoose.model('AutoArticle', ArticleSchema);
+module.exports = function(app){
+  //create the model on the subapp using the db for this subapp
+  app.locals.Article = app.db.model('Article',ArticleSchema);
+};

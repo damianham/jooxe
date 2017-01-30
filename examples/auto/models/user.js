@@ -230,5 +230,8 @@ UserSchema.statics.generateRandomPassphrase = function () {
     }
   });
 };
-
-mongoose.model('User', UserSchema);
+ 
+module.exports = function(app){
+  //create the model on the subapp using the db for this subapp
+  app.locals.User = app.db.model('User',UserSchema);
+};

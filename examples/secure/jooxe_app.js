@@ -78,7 +78,7 @@ module.exports.initSession = function (app, db) {
 
 };
 
-module.exports.init = function(callback) {
+module.exports.init = function(db_pool,callback) {
   const app = express();
 
   // Initialize local variables

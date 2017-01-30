@@ -8,7 +8,7 @@ var express = require('express'),
   path = require('path'),
   hbs = require('express-hbs');   //  https://github.com/barc/express-hbs
 
-module.exports.init = function(callback) {
+module.exports.init = function(db_pool,callback) {
   var app = express();
 
   // Initialize favicon middleware

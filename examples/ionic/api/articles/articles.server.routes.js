@@ -4,12 +4,16 @@
  * Module dependencies
  */
 var articlesPolicy = require('./articles.server.policy'),
-  model = require('./article.server.model'),
+  schema = require('./article.server.model'),
   articles = require('./articles.server.controller');
 
 articlesPolicy.invokeRolesPolicies();
 
 module.exports = function(app) {
+  
+  // create the model on the subapp using the db for this subapp
+  app.locals.Article = app.db.model('Article',schema);
+  
   // Articles Routes
   app.route('/api/articles').all(articlesPolicy.isAllowed)
     .get(articles.list)

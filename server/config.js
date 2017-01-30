@@ -15,7 +15,7 @@ const _ = require('lodash'),
  * Validate NODE_ENV existence
  */
 const validateEnvironmentVariable = function () {
-  const environmentFiles = glob.sync('./config/' + process.env.NODE_ENV + '.js');
+  const environmentFiles = glob.sync('server/config/' + process.env.NODE_ENV + '.js');
   console.log();
   if (!environmentFiles.length) {
     if (process.env.NODE_ENV) {

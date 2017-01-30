@@ -13,7 +13,7 @@ angular.module('starter.controllers', [])
 
   $scope.chats = Chats.query();
   $scope.remove = function(chat) {
-    Chats.remove({chatId:chat._Id});
+    Chats.remove({chatId:chat._id});
     $scope.chats = Chats.query();
   };
 })

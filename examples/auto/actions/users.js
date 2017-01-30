@@ -7,8 +7,7 @@
  * Module dependencies
  */
 var _ = require('lodash'),
-  mongoose = require('mongoose'),
-  User = mongoose.model('User');
+  mongoose = require('mongoose') ;
 
 /**
  * User middleware to load the user identified by the userId
@@ -20,7 +19,7 @@ module.exports.get = function (req, res, next, id) {
     });
   }
 
-  User.findOne({
+  req.app.locals.User.findOne({
     _id: id
   }).exec(function (err, user) {
     if (err) {
@@ -38,7 +37,7 @@ module.exports.post = function (req, res, next) {
 
   var user = req.user;
 
-  User.insertOne(user).exec(function (err, user) {
+  req.app.locals.User.insertOne(user).exec(function (err, user) {
     if (err) {
       return next(err);
     } else if (!user) {

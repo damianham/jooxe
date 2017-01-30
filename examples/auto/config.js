@@ -5,6 +5,6 @@
 
 module.exports = {
   db: {
-    name: 'ionic_jooxe'
+    name: 'auto_jooxe'
   }
 }
