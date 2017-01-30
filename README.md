@@ -66,21 +66,7 @@ Now the remote repository is created we can clone it locally and add an upstream
 ~/my_jooxe_apps$ git branch --unset-upstream
 ```
 
-You now have a local git repository that uses your own private remote repo for your web applications in the apps folder.  The final thing to
-do is to remove apps from .gitignore so you can save your changes to your private repo.  Edit .gitignore and change the lines 
-
-```
-# local apps
-apps/**/
-```
-
-to 
-```
-# local apps
-#apps/**/
-```
-
-or remove these lines altogether.
+You now have a local git repository that uses your own private remote repo for your web applications in the apps folder.  
 
 ### How it works
 The technique used here is to mount sub applications into the main application and use a reverse proxy to access the sub app via a 
@@ -89,7 +75,7 @@ specific hostname.  If you trace through the jooxe boot process you will see it 
  - jooxe/server.js loads jooxe/server/app.js and calls the start() function in that file which calls the init() function
  - jooxe/server/apps.js init() function globs the apps folder for a specific filename **jooxe_app.js** which is considered
    a mount point for sub apps.
- - the subapp is loaded with require and it's init() function is called with a callback
+ - the subapp is loaded with require and it's init() function is called with a database connection pool and a callback
  - the subapp.init() function create a new express app and then calls the callback function with the mount point and the new express app
  - the main app mounts the subapp at the given mount point
 
@@ -133,10 +119,8 @@ $ sudo echo "127.0.0.1  veggies.example.com" >> /etc/hosts
 
 If you now open a browser web page at http://hello.example.com you will see the output from the hello app.
 
-The example apps use various concepts and could be helpful to illustrate how MEAN and express apps work.  One important point to note is that
-Mongoose models must be unique across all apps.  So for example if you have an Article model in apps/angular and you want
-articles in another app then the model must be called something else, e.g. AutoArticle (for the auto app).  Another point to note is that if your web apps
-use any node modules then you need to add them to the main node_modules folder at the root and not in your web application.
+The example apps use various concepts and could be helpful to illustrate how MEAN and express apps work.  One important point to note is that 
+ if your web apps use any node modules then you need to add them to the main node_modules folder at the root and not in your web application.
 
 #### Server side examples
  - hello - a simple app that displays Hello World
@@ -149,8 +133,7 @@ use any node modules then you need to add them to the main node_modules folder a
  - ionic - an Ionic application with API backend
 
 To get an Ionic app working create a new Ionic app with the ionic-cli and copy all of the contents to jooxe/apps/ionic. 
-Then copy the contents of the ionic example
-on top to overwrite some of the ionic starter artifacts. E.g.
+Then copy the contents of the ionic example on top to overwrite some of the ionic starter artifacts. E.g.
 
 ```sh
 $ cd (path to jooxe parent folder)
@@ -160,7 +143,7 @@ $ mv chats jooxe/apps/ionic
 $ cp -r jooxe/examples/ionic/* jooxe/apps/ionic
 ```
 The ionic starter app has static Chats data in a Chat service.  The ionic example app in jooxe/examples/ionic overwrites some elements of the
-ionic starter app and provide a backend api service to load chats data from a mongoDB database.
+ionic starter app and provides a backend api service to load chats data from a mongoDB database.
 
 Once you have the domain name and nginx routing setup as above then visit http://ionic.example.com to see the ionic app in your web browser.
 
