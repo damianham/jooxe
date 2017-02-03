@@ -8,13 +8,15 @@ const config = require('./config'),
   morgan = require('morgan'),
   logger = require('./logger'),
   bodyParser = require('body-parser'),
+  session = require('express-session'),
+  MongoStore = require('connect-mongo')(session),
   compress = require('compression'),
   methodOverride = require('method-override'),
   cookieParser = require('cookie-parser'),
   path = require('path'),
-  _ = require('lodash');
+  _ = require('lodash'),
+	lusca = require('lusca');
  
-
 /**
  * Initialize local variables
  */
@@ -69,13 +71,40 @@ module.exports.initMiddleware = function (app) {
   app.use(cookieParser()); 
 };
 
- 
+
+/**
+ * Configure Express session
+ */
+module.exports.initSession = function (app, db) {
+  // Express MongoDB session storage
+  app.use(session({
+    saveUninitialized: true,
+    resave: true,
+    secret: config.sessionSecret,
+    cookie: {
+      maxAge: config.sessionCookie.maxAge,
+      httpOnly: config.sessionCookie.httpOnly,
+      secure: config.sessionCookie.secure && config.secure.ssl
+    },
+    name: config.sessionKey,
+    store: new MongoStore({
+			host: '127.0.0.1',
+        port: '27017',
+        db: 'jooxe',
+        url: 'mongodb://localhost:27017/jooxe',
+      collection: config.sessionCollection
+    })
+  }));
+
+  // Add Lusca CSRF Middleware
+  app.use(lusca(config.csrf));
+};
 
 
 /**
  * Initialize the Express application
  */
-module.exports.init = function () {
+module.exports.init = function (db) {
   // Initialize express app
   const app = express();
 
@@ -84,6 +113,9 @@ module.exports.init = function () {
 
   // Initialize Express middleware
   this.initMiddleware(app); 
+	
+  // Initialize Express session
+  this.initSession(app, db);
  
   return app;
 };

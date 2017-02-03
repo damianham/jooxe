@@ -11,11 +11,6 @@ const config = require('./config'),
   globber = require('./helpers/glob_paths');
 
 module.exports.init = function init(callback) {
-  const mainapp = express.init();
-  
-  const apps = globber('apps/**/jooxe_app.js');
-   
-  console.log('apps == ', apps);
   
   //setup the mongoose promise
   mongoose.Promise = global.Promise;
@@ -33,6 +28,12 @@ module.exports.init = function init(callback) {
  
     } 
   }); 
+	
+  const mainapp = express.init(db_pool);
+  
+  const apps = globber('apps/**/jooxe_app.js');
+   
+  console.log('apps == ', apps);
  
   apps.forEach(function(filepath){
     var subapp = require(path.join(process.cwd(), filepath));
